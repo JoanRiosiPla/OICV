@@ -1,2 +1,2 @@
 # OICV
-For the OICV prgramming competition
+For the OICV programming competition
