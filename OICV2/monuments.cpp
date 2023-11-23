@@ -7,25 +7,40 @@ using namespace std;
 
 int romantoint(string roman) {
     int out = 0;
+    int largest = 0;
     for (int i = roman.size() - 1; i >= 0; i--)
     {
-        if (roman[i] == 'I') out += 1;
-        else if (roman[i] == 'V') out += 5;
-        else if (roman[i] == 'X') out += 10;
-        else if (roman[i] == 'L') out += 50;
-        else if (roman[i] == 'C') out += 100;
-        else if (roman[i] == 'D') out += 500;
-        else if (roman[i] == 'M') out += 1000;
+        int val = 0;
+        if (roman[i] == 'I') val = 1;
+        else if (roman[i] == 'V') val = 5;
+        else if (roman[i] == 'X') val = 10;
+        else if (roman[i] == 'L') val = 50;
+        else if (roman[i] == 'C') val = 100;
+        else if (roman[i] == 'D') val = 500;
+        else if (roman[i] == 'M') val = 1000;
+        if (val < largest) out -= val;
+        else out += val;
+        largest = largest > val ? largest : val;
     }
     return out;
 }
 
-void one() {
-
+int one(vector<string> romans) {
+    int smallest = 1000000000;
+    for (int i = 0; i < romans.size(); i++)
+    {
+        smallest = romantoint(romans[i]) < smallest ? romantoint(romans[i]) : smallest;
+    }
+    return smallest;
 }
 
-void two() {
+bool sorter(string n, string p) {
+    return romantoint(n) < romantoint(p);
+}
 
+string two(vector<string> romans) {
+    sort(romans.begin(), romans.end(), &sorter);
+    return romans[0] + " " + romans[1];
 }
 
 int main(void) {
@@ -42,8 +57,8 @@ int main(void) {
     romans.erase(romans.end());
 
     if(version == 0) cout << romans.size();
-    else if (version == 1) cout << romantoint(romans[0]);
-    else if (version == 2) two();
+    else if (version == 1) cout << one(romans);
+    else if (version == 2) cout << two(romans);
 
 
     cout << endl;
