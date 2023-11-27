@@ -2,6 +2,7 @@
 #include <vector>
 #include <string.h>
 #include <random>
+#include <time.h>
 
 // CSV files
 #include <fstream>
@@ -49,8 +50,8 @@ iterationResult iterate(int boxN, int maxPrice)
 
 int main(void) 
 {
-    // Start rand
-    rand
+    // Start rand TODO
+    // srand(time(NULL));
 
     // Open file
     string filename = "";
