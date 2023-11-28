@@ -51,16 +51,16 @@ iterationResult iterate(int boxN, int maxPrice)
 int main(void) 
 {
     // Start rand TODO
-    // srand(time(NULL));
+    srand(time(NULL));
 
     // Open file
     string filename = "";
     filename += "boxes_";
     filename += to_string(rand() % 10000);
     filename += ".csv";
-    ofstream file;
-    file.open(filename);
-    if (!file.is_open()) {
+    ofstream rw_file;
+    rw_file.open("raw_" + filename);
+    if (!rw_file.is_open()) {
         cout << "ERROR 1: Error while opening file." << endl;
         return 1;
     }
@@ -69,26 +69,41 @@ int main(void)
     int boxes = 27;
 
     // For create columns
-    file << "MaxVal, MaxPos \n";
+    rw_file << "MaxVal, MaxPos \n";
 
     // We have a range of prices (0$ - 1000000$) which we will represent as a range from 0 to 100.
     int maxPrice = 100;
-    int iterations = 1000;
+    int iterations = 100000;
 
     // To display percentages
     int percentageStep = iterations / 100;
 
+    cout << "Generating raw data:" << endl;
+
     for (int i = 0; i < iterations; i++)
     {
         iterationResult res = iterate(boxes, maxPrice);
-        file << res.maxValue << "," << res.maxId << endl;
+        rw_file << res.maxValue << "," << res.maxId << endl;
 
         // Display percentages
-        if (iterations % percentageStep == 0) cout << i / percentageStep << "%" << endl;
+        if ((int)(i / percentageStep) != (int)((i-1) / percentageStep)) {cout << "\r" << i / percentageStep << "%" << std::flush;}
     }
-    cout << "100\% DONE!" << endl;
-    file.close();
-    cout << "Saved to " << filename << endl;
-    
+    cout << "\r100\% DONE!" << endl;
+    cout << "Saved raw to raw_" << filename << endl;
+
+    cout << "Generating rel_" << filename << endl;
+    ofstream rel_file;
+    rel_file.open("rel_" + filename);
+    if (!rel_file.is_open()) 
+    {
+        rw_file.close();
+        cout << "ERROR 2: Error while opening file." << endl;
+        return 2;
+    }
+
+    vector<int> maxPositions(0, boxes);
+
+    rw_file.close();
+    rel_file.close();
     return 0;
 }
