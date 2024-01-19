@@ -1,3 +1,5 @@
+#include <bits/stdc++.h> // Everything
+
 #include <iostream>
 #include <vector>
 #include <string.h>
